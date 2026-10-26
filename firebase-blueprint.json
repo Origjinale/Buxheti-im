@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Represents a single expense or income record.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who owns the transaction."
+        },
+        "amount": {
+          "type": "number",
+          "description": "Amount of money in the transaction."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["EXPENSE", "INCOME"],
+          "description": "Type of transaction, EXPENSE or INCOME."
+        },
+        "category": {
+          "type": "string",
+          "description": "Category identifier for the transaction."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional notes or details for the transaction."
+        },
+        "date": {
+          "type": "string",
+          "description": "Date in YYYY-MM-DD format for fast querying and filtering."
+        },
+        "paymentMethod": {
+          "type": "string",
+          "enum": ["CASH", "CARD", "TRANSFER"],
+          "description": "Payment method used."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the transaction was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the transaction was last updated."
+        }
+      },
+      "required": ["userId", "amount", "type", "category", "date", "createdAt"]
+    },
+    "BudgetGoal": {
+      "title": "BudgetGoal",
+      "description": "User budget settings, daily and monthly spending limits.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user."
+        },
+        "monthlyBudget": {
+          "type": "number",
+          "description": "Maximum target budget for the month."
+        },
+        "dailyBudget": {
+          "type": "number",
+          "description": "Target daily spending limit."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Preferred currency symbol (EUR, LEK, USD)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when budget settings were created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when budget settings were last updated."
+        }
+      },
+      "required": ["userId", "monthlyBudget", "dailyBudget", "currency", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/transactions/{transactionId}": {
+      "schema": {
+        "$ref": "#/entities/Transaction"
+      },
+      "description": "User's financial transactions (expenses and income)."
+    },
+    "/users/{userId}/budget/{budgetId}": {
+      "schema": {
+        "$ref": "#/entities/BudgetGoal"
+      },
+      "description": "User's monthly and daily budget settings."
+    }
+  }
+}
